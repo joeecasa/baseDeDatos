@@ -1,5 +1,6 @@
 const db = require("../database/models/index")
 const { Op } =  require("sequelize");
+const { validationResult } = require("express-validator");
 
 
 
@@ -21,9 +22,12 @@ const moviesController = {
             })
     },
     detail: (req, res) =>{
+        
         db.Movie.findByPk(req.params.id)
         .then(function(movie){
-            res.render("moviesDetail",{movie:movie})
+            let fechaCorta = movie.release_date.getFullYear() + "-" + (movie.release_date.getMonth() + 1 ) + "-" + movie.release_date.getDate()
+            console.log(fechaCorta)
+            res.render("moviesDetail",{movie:movie,fechaCorta:fechaCorta})
 
         })
     },
@@ -57,7 +61,16 @@ const moviesController = {
         res.render("moviesAdd")
     },
     create : (req,res) =>{
+        console.log(req.body.release_date)
+        const errors = validationResult(req)
+        if(errors.errors.length > 0){
+            return(res.render("moviesAdd",{
+                errors : errors.mapped(),
+                old : req.body
+            }))
+        }
 db.Movie.create(
+    
     {
         title : req.body.title,
         rating : req.body.rating,
@@ -67,20 +80,36 @@ db.Movie.create(
 
     })
     .then(movie =>{
+        
         res.redirect("/movies")
 
+    }).catch(function(err){
+        console.log(err)
     })
 
     },
     edit:(req,res) =>{
 db.Movie.findByPk(req.params.id)
 .then(Movie=>{
-    res.render("moviesEdit",{Movie:Movie})
+    let dia = Movie.release_date.getDate()
+    let mes = (Movie.release_date.getMonth() + 1 )
+    let año = Movie.release_date.getFullYear()
+    
+    if(Movie.release_date.getDate() < 10 ){
+    dia = "0" + dia
+    }
+    if(Movie.release_date.getMonth() < 10 ){
+        mes = "0" + mes
+        }
+     let fechaCorta = año + "-" + mes + "-" + dia
+    
+    res.render("moviesEdit",{Movie:Movie,fechaCorta:fechaCorta})
 
 })
 
     },
     update : (req,res) =>{
+       console.log(req.body.release_date) 
         db.Movie.update(
             {
                 title : req.body.title,
@@ -95,9 +124,11 @@ db.Movie.findByPk(req.params.id)
                     id : req.params.id
                 }
             })
-            .then(movie =>{
+            .then(() =>{
                 res.redirect("/movies")
         
+            }).catch(function(err){
+                console.log(err)
             })
         
             },
@@ -117,6 +148,8 @@ db.Movie.findByPk(req.params.id)
                         })
                         .then(() => {
                             res.redirect("/movies")
+                        }).catch(function(err){
+                            console.log(err)
                         })
                     }
 
