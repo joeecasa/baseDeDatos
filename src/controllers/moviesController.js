@@ -61,7 +61,6 @@ const moviesController = {
         res.render("moviesAdd")
     },
     create : (req,res) =>{
-        console.log(req.body.release_date)
         const errors = validationResult(req)
         if(errors.errors.length > 0){
             return(res.render("moviesAdd",{
@@ -79,7 +78,7 @@ db.Movie.create(
         length : req.body.length
 
     })
-    .then(movie =>{
+    .then(() =>{
         
         res.redirect("/movies")
 
@@ -109,7 +108,7 @@ db.Movie.findByPk(req.params.id)
 
     },
     update : (req,res) =>{
-       console.log(req.body.release_date) 
+       console.log("release",req.body.release_date) 
         db.Movie.update(
             {
                 title : req.body.title,
