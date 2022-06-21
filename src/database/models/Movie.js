@@ -8,12 +8,12 @@ module.exports = (sequelize, dataTypes) => {
                 primaryKey: true
             },
             created_at: {
-                field:"created_at",// tiraba error entonces le pusimos el campo field
+                field: "created_at",// tiraba error entonces le pusimos el campo field
                 type: dataTypes.DATE,
                 allowNull: true
             },
             updated_at: {
-                field:"updated_at",
+                field: "updated_at",
                 type: dataTypes.DATE,
                 allowNull: true,
             },
@@ -22,14 +22,14 @@ module.exports = (sequelize, dataTypes) => {
                 allowNull: false
             },
             rating: {
-                type: dataTypes.DECIMAL(3,1),
+                type: dataTypes.DECIMAL(3, 1),
                 allowNull: false,
 
             },
             awards: {
                 type: dataTypes.INTEGER,
                 allowNull: false,
-                defaultValue : 0
+                defaultValue: 0
             },
             release_date: {
                 type: dataTypes.DATE,
@@ -44,13 +44,29 @@ module.exports = (sequelize, dataTypes) => {
                 allowNull: true
             },
         }
-        let config = {
-            timestamps : true,
-            underscored : true // tiraba error entonces pusimos estas dos cosas en config
-                
-        }
+    let config = {
+        timestamps: true,
+        underscored: true // tiraba error entonces pusimos estas dos cosas en config
 
-const Movie = sequelize.define(alias,cols,config)
+    }
+
+    const Movie = sequelize.define(alias, cols, config)
+
+    Movie.associate = function (models) {
+        Movie.belongsTo(models.Genre,{
+                as: "genero",
+                foreignKey: "genre_id"
+            });
+
+        Movie.belongsToMany(models.Actor,{
+                as: "actores",
+                through: "actor_movie",
+                foreignKey: "movie_id",
+                otherKey: "actor_id",
+                timestamps: true
+            });
+
+    }
 
     return Movie;
 }

@@ -19,8 +19,8 @@ app.use(express.static(path.resolve(__dirname, '../public')));
 app.use(express.urlencoded({ extended: false }));
 app.use(methodOverride('_method'));// Pasar poder usar los métodos PUT y DELETE
 app.use('/', indexRouter);
-app.use(actorRoutes);
-app.use(moviesRoutes);
-app.use(genresRoutes);
+app.use("/actors",actorRoutes);
+app.use("/movies",moviesRoutes);
+app.use("/genres",genresRoutes);
 
-app.listen('3001', () => console.log('Servidor corriendo en el puerto 3001'));
+app.listen('3002', () => console.log('Servidor corriendo en el puerto 3001'));

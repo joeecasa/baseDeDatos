@@ -16,14 +16,20 @@
     <h1>LISTADO DE PELÍCULAS</h1>
 
     <a href="/movies/add"><h2>Crear pelicula</h2></a>
-    <ul>
-        <% for( let i = 0; i < movies.length; i++ ) { %>
-        <li>
-            <a href="/movies/detail/<%= movies[i].id %>"><%= movies[i].title %></a>
-        </li>
-        <% } %>
+   <br>
+<ul>
+    <% movies.forEach(movie => { %>
+<li>
+    <a href="/movies/detail/<%= movie.id %>"><%= movie.title %> </a> 
+   
+</li>
 
-    </ul>
+ 
+        <% }) %>
+
+</ul>
+
+    
 </body>
 
 </html>

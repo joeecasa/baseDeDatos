@@ -9,23 +9,27 @@ const validacion = [
     body("rating", "Debe introducir un ranking del 1 al 10").isInt({min:1 , max : 10}),
     body("awards", "Debe introducir una cantidad numerica").isNumeric(),
     body("length", "Debe introducir una cantidad numerica minimo de 15 minutos y maximo de 500").isInt({min : 15 ,  max : 500}),
-    body("release_date", "Debe introducir una fecha").isDate()
+    body("release_date", "Debe introducir una fecha").isDate(),
+    body("genre","Debe introducir un género").notEmpty()
 
 ]
 
-router.get('/movies', moviesController.list);
-router.get('/movies/new', moviesController.new);
-router.get('/movies/recommended', moviesController.recomended);
-router.get('/movies/detail/:id', moviesController.detail);
+router.get('/', moviesController.list);
+router.get('/new', moviesController.new);
+router.get('/recommended', moviesController.recomended);
+router.get('/detail/:id', moviesController.detail);
 
 
 // //Rutas exigidas para la creación del CRUD
-router.get('/movies/add', moviesController.add)
-router.post('/movies/create',validacion, moviesController.create);
-router.get('/movies/edit/:id', moviesController.edit);
-router.put('/movies/update/:id', moviesController.update);
-router.get('/movies/delete/:id', moviesController.delete);
-router.delete('/movies/delete/:id', moviesController.destroy);
+router.get('/add', moviesController.add)
+router.post('/create',validacion, moviesController.create);
+
+
+router.get('/edit/:id', moviesController.edit);
+
+router.put('/update/:id', moviesController.update);
+router.get('/delete/:id', moviesController.delete);
+router.delete('/delete/:id', moviesController.destroy);
 
 
 module.exports = router;

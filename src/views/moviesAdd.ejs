@@ -16,13 +16,16 @@
     <br>
     <section class="formulario">
         <form action="/movies/create" method="POST">
-            <label for="title">Title </label>
+
+            <label for="title">Title
+
+            </label>
             <p><input type="text" name="title" id="title" value="<%= locals.old && old.title ? old.title : "" %> "></p>
             <% if (locals.errors && errors.title) { %>
                 <p>
                     <%= errors.title.msg %>
                 </p>
-         <% } %>
+                <% } %>
 
                     <label for="rating">Rating </label>
                     <p><input type="number" name="rating" value="<%= locals.old && old.rating ? old.rating : "" %>">
@@ -58,10 +61,28 @@
                                                 <% } %>
 
                                                     <br>
+                                                    <select name="genre">
+                                                        <option value="" disabled selected>Seleccione</option>
+                                                        <% generos.forEach(genero=> { %>
+                                                            <option <%= locals.old && old.genre == genero.name ? "selected" : "" %> value="<%= genero.name %>"> 
+                                                                <%= genero.name %>
+                                                            </option>
+                                                            <% }) %>
+                                                    </select>
+                                                    <% if (locals.errors && errors.genre) { %>
+                                                        <p>
+                                                            <%= errors.genre.msg %>
+                                                        </p>
+                                                        <% } %>
                                                     <p> <button class="botonAgregar" type="submit">Agregar</button>
 
                                                         <a class="botonVolver" href="/movies">Listado de Películas</a>
                                                     </p>
+                                                  
+                                                  
+
+
+
         </form>
     </section>
 
